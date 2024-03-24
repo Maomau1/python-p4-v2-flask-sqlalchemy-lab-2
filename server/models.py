@@ -17,7 +17,7 @@ class Customer(db.Model,SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    reviews = db.relationship('Review', back_populates = 'customer')
+    reviews = db.relationship('Review', back_populates = 'customer', cascade='all, delete-orphan')
     items = association_proxy('reviews','item',
                               creator = lambda item_obj: Review(item = item_obj))
 
@@ -34,7 +34,7 @@ class Item(db.Model, SerializerMixin):
     name = db.Column(db.String)
     price = db.Column(db.Float)
 
-    reviews = db.relationship('Review', back_populates='item')
+    reviews = db.relationship('Review', back_populates='item', cascade='all, delete-orphan')
 
     serialize_rules = ('-reviews.item',)
 
